@@ -1,0 +1,52 @@
+<% layout('layout') -%>
+
+<div class="search-results-container">
+    <div class="container">
+        <div class="search-header">
+            <h1>Search Results</h1>
+            <% if (typeof query !== 'undefined' && query) { %>
+                <p>Results for: "<strong><%= query %></strong>"</p>
+            <% } %>
+            
+            <div class="search-actions">
+                <form action="/search" method="GET" class="inline-search-form">
+                    <input type="text" name="q" value="<%= typeof query !== 'undefined' ? query : '' %>" placeholder="Search movies...">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                        Search Again
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <% if (typeof results !== 'undefined' && results.length > 0) { %>
+                <div class="results-info">
+                    <p>Found <%= results.length %> result<%= results.length !== 1 ? 's' : '' %></p>
+                    <div class="view-options">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="results-container">
+                    <% results.forEach(movie => { %>
+                        <div class="search-result-card">
+                            <div class="movie-poster">
+                                <% if (movie.poster && movie.poster !== 'N/A') { %>
+                                    <img src="<%= movie.poster %>" alt="<%= movie.title %>" loading="lazy">
+                                <% } else { %>
+                                    <div class="no-poster">
+                                        <i class="fas fa-film"></i>
+                                        <span>No Poster</span>
+                                    </div>
+                                <% } %>
+                                <div class="movie-overlay">
+                                    <% if (movie.imdb_rating
+
+
+<%- include('partials/footer') %>

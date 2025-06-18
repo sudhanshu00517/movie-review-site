@@ -1,0 +1,176 @@
+<%- include('partials/header') %>
+
+<div class="movie-detail-container">
+    <div class="movie-hero">
+        <div class="movie-backdrop" style="background-image: url('<%= movie.backdrop || movie.poster %>');">
+            <div class="movie-hero-overlay">
+                <div class="container">
+                    <div class="movie-hero-content">
+                        <div class="movie-poster-large">
+                            <img src="<%= movie.poster %>" alt="<%= movie.title %>">
+                        </div>
+                        <div class="movie-details">
+                            <h1 class="movie-title"><%= movie.title %></h1>
+                            <div class="movie-meta">
+                                <span class="movie-year"><%= movie.year %></span>
+                                <% if (movie.genre) { %>
+                                    <span class="movie-genre"><%= movie.genre %></span>
+                                <% } %>
+                                <% if (movie.runtime) { %>
+                                    <span class="movie-runtime"><%= movie.runtime %> min</span>
+                                <% } %>
+                            </div>
+                            <div class="movie-ratings">
+                                <div class="rating-item">
+                                    <span class="rating-label">Our Rating:</span>
+                                    <div class="star-rating">
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fas fa-star <%= movie.average_rating >= i ? 'active' : '' %>"></i>
+                                        <% } %>
+                                    </div>
+                                    <span class="rating-value">(<%= movie.average_rating || 0 %>/5)</span>
+                                </div>
+                                <% if (movie.imdb_rating) { %>
+                                    <div class="rating-item">
+                                        <span class="rating-label">IMDb:</span>
+                                        <span class="rating-value"><%= movie.imdb_rating %>/10</span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="movie-actions">
+                                <button class="btn like-btn <%= movie.user_liked ? 'active' : '' %>" data-movie-id="<%= movie.id %>">
+                                    <i class="fas fa-heart"></i>
+                                    Like (<%= movie.likes || 0 %>)
+                                </button>
+                                <button class="btn dislike-btn <%= movie.user_disliked ? 'active' : '' %>" data-movie-id="<%= movie.id %>">
+                                    <i class="fas fa-heart-broken"></i>
+                                    Dislike (<%= movie.dislikes || 0 %>)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-content">
+        <div class="container">
+            <div class="movie-description">
+                <h2>Overview</h2>
+                <p><%= movie.description || 'No description available.' %></p>
+            </div>
+
+            <div class="movie-stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= movie.average_rating || 0 %></h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= movie.review_count || 0 %></h3>
+                            <p>Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-thumbs-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= movie.likes || 0 %></h3>
+                            <p>Likes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-thumbs-down"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= movie.dislikes || 0 %></h3>
+                            <p>Dislikes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-section">
+                <div class="reviews-header">
+                    <h2>Reviews</h2>
+                    <button class="btn btn-primary" id="write-review-btn">Write Review</button>
+                </div>
+
+                <div class="add-review-form" id="review-form" style="display: none;">
+                    <form action="/movie/<%= movie.id %>/review" method="POST">
+                        <div class="form-group">
+                            <label for="rating">Your Rating:</label>
+                            <div class="star-rating-input" data-rating="0">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fas fa-star" data-rating="<%= i %>"></i>
+                                <% } %>
+                            </div>
+                            <input type="hidden" name="rating" id="rating" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="review">Your Review:</label>
+                            <textarea name="review" id="review" rows="4" placeholder="Share your thoughts about this movie..." required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-review-btn">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="reviews-list">
+                    <% if (typeof reviews !== 'undefined' && reviews.length > 0) { %>
+                        <% reviews.forEach(review => { %>
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <div class="reviewer-info">
+                                        <div class="reviewer-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="reviewer-details">
+                                            <h4>Anonymous User</h4>
+                                            <span class="review-date"><%= new Date(review.created_at).toLocaleDateString() %></span>
+                                        </div>
+                                    </div>
+                                    <div class="review-rating">
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <i class="fas fa-star <%= review.rating >= i ? 'active' : '' %>"></i>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="review-content">
+                                    <p><%= review.review %></p>
+                                </div>
+                                <div class="review-actions">
+                                    <button class="btn-text helpful-btn" data-review-id="<%= review.id %>">
+                                        <i class="fas fa-thumbs-up"></i>
+                                        Helpful (<%= review.helpful_count || 0 %>)
+                                    </button>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-reviews">
+                            <i class="fas fa-comment-slash"></i>
+                            <h3>No reviews yet</h3>
+                            <p>Be the first to review this movie!</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer') %>

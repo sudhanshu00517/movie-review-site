@@ -1,0 +1,173 @@
+<%- include('partials/header') %>
+
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Discover Amazing Movies</h1>
+        <p class="hero-subtitle">Rate, review, and recommend your favorite films</p>
+        <div class="hero-actions">
+            <a href="/add-movie" class="btn btn-primary">Add Movie</a>
+            <a href="/search" class="btn btn-secondary">Browse Movies</a>
+        </div>
+    </div>
+</div>
+
+<section class="featured-section">
+    <div class="container">
+        <h2 class="section-title">Featured Movies</h2>
+        <div class="movies-grid">
+            <% if (typeof featuredMovies !== 'undefined' && featuredMovies.length > 0) { %>
+                <% featuredMovies.forEach(movie => { %>
+                    <div class="movie-card featured">
+                        <div class="movie-poster">
+                            <img src="<%= movie.poster %>" alt="<%= movie.title %>" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span><%= movie.average_rating || 'N/A' %></span>
+                                </div>
+                                <div class="movie-actions">
+                                    <button class="btn-icon like-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="btn-icon dislike-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart-broken"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title">
+                                <a href="/movie/<%= movie.id %>"><%= movie.title %></a>
+                            </h3>
+                            <p class="movie-year"><%= movie.year %></p>
+                            <div class="movie-stats">
+                                <span class="stat">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <%= movie.likes || 0 %>
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    <%= movie.review_count || 0 %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fas fa-film"></i>
+                    <h3>No featured movies yet</h3>
+                    <p>Be the first to add and review movies!</p>
+                    <a href="/add-movie" class="btn btn-primary">Add Your First Movie</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<section class="recent-section">
+    <div class="container">
+        <h2 class="section-title">Recently Added</h2>
+        <div class="movies-grid">
+            <% if (typeof recentMovies !== 'undefined' && recentMovies.length > 0) { %>
+                <% recentMovies.forEach(movie => { %>
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="<%= movie.poster %>" alt="<%= movie.title %>" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span><%= movie.average_rating || 'N/A' %></span>
+                                </div>
+                                <div class="movie-actions">
+                                    <button class="btn-icon like-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="btn-icon dislike-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart-broken"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title">
+                                <a href="/movie/<%= movie.id %>"><%= movie.title %></a>
+                            </h3>
+                            <p class="movie-year"><%= movie.year %></p>
+                            <div class="movie-stats">
+                                <span class="stat">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <%= movie.likes || 0 %>
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    <%= movie.review_count || 0 %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fas fa-clock"></i>
+                    <h3>No recent movies</h3>
+                    <p>Start building your movie collection!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<section class="popular-section">
+    <div class="container">
+        <h2 class="section-title">Most Popular</h2>
+        <div class="movies-grid">
+            <% if (typeof popularMovies !== 'undefined' && popularMovies.length > 0) { %>
+                <% popularMovies.forEach(movie => { %>
+                    <div class="movie-card">
+                        <div class="movie-poster">
+                            <img src="<%= movie.poster %>" alt="<%= movie.title %>" loading="lazy">
+                            <div class="movie-overlay">
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span><%= movie.average_rating || 'N/A' %></span>
+                                </div>
+                                <div class="movie-actions">
+                                    <button class="btn-icon like-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                    <button class="btn-icon dislike-btn" data-movie-id="<%= movie.id %>">
+                                        <i class="fas fa-heart-broken"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3 class="movie-title">
+                                <a href="/movie/<%= movie.id %>"><%= movie.title %></a>
+                            </h3>
+                            <p class="movie-year"><%= movie.year %></p>
+                            <div class="movie-stats">
+                                <span class="stat">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <%= movie.likes || 0 %>
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-comment"></i>
+                                    <%= movie.review_count || 0 %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="fas fa-fire"></i>
+                    <h3>No popular movies yet</h3>
+                    <p>Add reviews and ratings to see popular movies here!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <%- include('partials/footer') %>
+</section>
